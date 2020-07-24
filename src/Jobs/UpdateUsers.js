@@ -29,8 +29,6 @@ class UpdateUsers extends Job {
 		const user = this.client.users.get(this.users[this.index].id);
 
 		if (user) {
-			console.log('Update user', user.username, this.index, this.users.length);
-
 			if (user.bot) {
 				await this.db.updateBot(user.id, {
 					username: user.username,
