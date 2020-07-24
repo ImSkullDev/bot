@@ -2,7 +2,7 @@ const Job = require('../Structure/Job');
 
 class UpdateUsers extends Job {
 	constructor(parent) {
-		super('Update Users', '@daily');
+		super('Update Users', '0 * * * *', true);
 
 		this.id = 1;
 
@@ -17,10 +17,8 @@ class UpdateUsers extends Job {
 		this.users = [];
 
 		const users = await this.db.getAllUsers();
-		const bots = await this.db.getAllBots();
 
 		this.users.push(...users);
-		this.users.push(...bots);
 
 		this.check();
 	}
@@ -31,6 +29,8 @@ class UpdateUsers extends Job {
 		const user = this.client.users.get(this.users[this.index].id);
 
 		if (user) {
+			console.log('Update user', user.username, this.index, this.users.length);
+
 			if (user.bot) {
 				await this.db.updateBot(user.id, {
 					username: user.username,
