@@ -24,7 +24,7 @@ class Position extends BaseCommand {
 
 		const bot = await this.db.getBot(args[0]);
 
-		if (!bot) return msg.channel.createMessage(':exclamation:   **»**   Bot ' + bot.username + '#' + bot.discriminator + ' is not listed on the site.').catch(this.handleMessageError);
+		if (!bot) return msg.channel.createMessage(':exclamation:   **»**   That bot is not listed on our website. Make sure that you use an ID instead of a mention.').catch(this.handleMessageError);
 
 		if (bot.approved) return msg.channel.createMessage(':exclamation:   **»**   Bot ' + bot.username + '#' + bot.discriminator + ' has been approved, and is not in queue').catch(this.handleMessageError);
 
