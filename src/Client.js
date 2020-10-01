@@ -233,9 +233,8 @@ class Client {
 	}
 
 	async updateUserRoles(id) {
-		const member = this.client.guild.members.get(id);
-
-		if (!member) return;
+		const user = await this.db.getUser(id);
+		if (!user) return;
 
 		const bots = await this.db.getApprovedBotsByOwner(id);
 		const servers = await this.db.getServersByOwner(id);
@@ -245,31 +244,31 @@ class Client {
 		let updatedRoles = false;
 
 		if (isCertified && !member.roles.includes(config.discord.roles.certified)) {
-			member.addRole(config.discord.roles.certified, 'User owns a certified bot/server');
+			this.client.addGuildMemberRole(config.discord.guildID, id, config.discord.roles.certified, 'User owns a certified bot/server');
 
 			updatedRoles = true;
 		} else if (!isCertified && member.roles.includes(config.discord.roles.certified)) {
-			member.removeRole(config.discord.roles.certified, 'User does not have any certified bots/servers');
+			this.client.removeGuildMemberRole(config.discord.guildID, id, config.discord.roles.certified, 'User does not have any certified bots/servers');
 
 			updatedRoles = true;
 		}
 
 		if (bots.length > 0 && !member.roles.includes(config.discord.roles.botDeveloper)) {
-			member.addRole(config.discord.roles.botDeveloper, 'User owns a bot listed');
+			this.client.addGuildMemberRole(config.discord.guildID, id, config.discord.roles.botDeveloper, 'User owns a bot listed');
 
 			updatedRoles = true;
 		} else if (bots.length < 1 && member.roles.includes(config.discord.roles.bot)) {
-			member.removeRole(config.discord.roles.botDeveloper, 'User does not own any listed bots');
+			this.client.removeGuildMemberRole(config.discord.guildID, id, config.discord.roles.botDeveloper, 'User does not own any listed bots');
 
 			updatedRoles = true;
 		}
 
 		if (servers.length > 0 && !member.roles.includes(config.discord.roles.serverOwner)) {
-			member.addRole(config.discord.roles.serverOwner, 'User owns a server listed');
+			this.client.addGuildMemberRole(config.discord.guildID, id, config.discord.roles.serverOwner, 'User owns a server listed');
 
 			updatedRoles = true;
 		} else if (servers.length < 1 && member.roles.includes(config.discord.roles.serverOwner)) {
-			member.removeRole(config.discord.roles.serverOwner, 'User does not own any listed servers');
+			this.client.removeGuildMemberRole(config.discord.guildID, id, config.discord.roles.serverOwner, 'User does not own any listed servers');
 
 			updatedRoles = true;
 		}
@@ -278,42 +277,37 @@ class Client {
 	}
 
 	async updateBotRoles(id) {
-		const member = this.client.guild.members.get(id);
-
-		if (!member) return;
-
 		const bot = await this.db.getBot(id);
-
 		if (!bot) return false;
 
 		let updatedRoles = false;
 
 		if (bot.approved && member.roles.includes(config.discord.roles.pendingVerification)) {
-			member.removeRole(config.discord.roles.pendingVerification, 'Bot has been approved');
+			this.client.removeGuildMemberRole(config.discord.guildID, id, config.discord.roles.pendingVerification, 'Bot has been approved');
 
 			updatedRoles = true;
 		} else if (!bot.approved && !member.roles.includes(config.discord.roles.pendingVerification)) {
-			member.addRole(config.discord.roles.pendingVerification, 'Bot has not been approved yet');
+			this.client.addGuildMemberRole(config.discord.guildID, id, config.discord.roles.pendingVerification, 'Bot has not been approved yet');
 
 			updatedRoles = true;
 		}
 
 		if (bot.approved && !member.roles.includes(config.discord.roles.bot)) {
-			member.addRole(config.discord.roles.bot, 'Bot has been approved');
+			this.client.addGuildMemberRole(config.discord.guildID, id, config.discord.roles.bot, 'Bot has been approved');
 
 			updatedRoles = true;
 		} else if (!bot.approved && member.roles.includes(config.discord.roles.bot)) {
-			member.removeRole(config.discord.roles.bot, 'Bot has not been approved yet');
+			this.client.removeGuildMemberRole(config.discord.guildID, id, config.discord.roles.bot, 'Bot has not been approved yet');
 
 			updatedRoles = true;
 		}
 
 		if (bot.certified && !member.roles.includes(config.discord.roles.certified)) {
-			member.addRole(config.discord.roles.certified, 'Bot has been certified');
+			this.client.addGuildMemberRole(config.discord.guildID, id, config.discord.roles.certified, 'Bot has been certified');
 
 			updatedRoles = true;
 		} else if (!bot.certified && member.roles.includes(config.discord.roles.certified)) {
-			member.removeRole(config.discord.roles.certified, 'Bot is not certified');
+			this.client.removeGuildMemberRole(config.discord.guildID, id, config.discord.roles.certified, 'Bot is not certified');
 
 			updatedRoles = true;
 		}
