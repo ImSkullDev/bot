@@ -2,7 +2,7 @@ const Job = require('../Structure/Job');
 
 class UpdateRoles extends Job {
 	constructor(parent) {
-		super('Update Roles', '@daily');
+		super('Update Roles', '@daily', true);
 
 		this.id = 2;
 
