@@ -42,7 +42,7 @@ class UpdateRoles extends Job {
 		this[user.bot ? 'updateBotRoles' : 'updateUserRoles'](user.id);
 
 		this.index++;
-		setTimeout(() => this.check(), 100);
+		setTimeout(() => this.check(), 500);
 	}
 }
 
