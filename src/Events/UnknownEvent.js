@@ -9,9 +9,9 @@ class UnknownEvent extends Event {
 	}
 
 	run(payload, shard) {
-		if (['WEBHOOKS_UPDATE', 'GIFT_CODE_UPDATE'].some((event) => payload.t === event)) return;
+		/* if (['WEBHOOKS_UPDATE', 'GIFT_CODE_UPDATE'].some((event) => payload.t === event)) return;
 
-		Logger.info('Shard  ' + shard + ' received an unknown payload:', payload);
+		Logger.info('Shard  ' + shard + ' received an unknown payload:', payload); */
 	}
 }
 
