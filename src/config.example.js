@@ -1,6 +1,6 @@
 module.exports = {
 	bot: {
-		token: 'ODE1MDA1MTIzNTE2MTcwMjcy.YDmGqw.hWiLFOb63w2kvhIx582Gyp4RNks',
+		token: '',
 		prefix: '^',
 		clientOptions: {
 			getAllUsers: true,
